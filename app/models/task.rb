@@ -9,19 +9,27 @@ class Task < ApplicationRecord
     ['完了(done)', 'done']
   ]
 
-
-
-
-
-
   def badge_color
     case status
       when 'undo'
-        'secondary'
+        'danger'
       when'doing'
-        'info'
+        'warning'
       when 'done'
         'success'
     end
   end
+
+  def done?
+    status == 'done'
+  end
+
+  def doing?
+    status == 'doing'
+  end
+
+  def undo?
+    status == 'undo'
+  end
+
 end

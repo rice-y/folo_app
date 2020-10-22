@@ -1,8 +1,9 @@
 <div class="card">
   <div class="card-body">
     <h2 class='card-title d-flex justify-content-between mb-4'>
-      <span>Projects</span>
-      <%= link_to 'New Project', new_project_path, class: 'btn btn-primary' %>
+      <span>プロジェクト一覧</span>
+      <%= link_to '新規投稿', new_project_path, class: 'btn btn-primary' %>
+      
     </h2>
 
     <% @projects.each do |project| %>
@@ -10,8 +11,16 @@
         <div class="card project-card mb-3">
           <div class="card-body">
             <div class="mb-3">
-
-              
+                <span class="badge badge-<%= project.badge_color %>">
+                <%= project.status %>
+              </span>
+              <span class='text-secondary'>
+                <small>
+                  進捗：<%= project.percent_complete %>%
+                  タスク完了数：(<%= project.total_complete %>/<%= project.total_tasks %> )
+                  <%# from: <%task.user.name%> %>
+                </small>
+              </span>
             </div>
             <h5 class='card-title text-dark'><b><%= project.name %></b></h5>
             <p class='text-secondary'><%= project.description %></p>

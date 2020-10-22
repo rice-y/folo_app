@@ -11,7 +11,7 @@
     </h2>
     <p><%= @project.description %><p>
     <div class="mb-4">
-      <h6>Add task</h6>
+      <h6>タスクを追加する</h6>
       <%= form_for([@task.project, @task]) do |f| %>
         <% if @task.errors.any? %>
           <div id="error_explanation">
@@ -35,7 +35,7 @@
       <% end %>
     </div>
 
-   <h4>Tasks</h4>
+   <h4>タスク一覧</h4>
     <% @project.tasks.each do |task| %>
       <% if task.persisted? %>
         <div class="card mb-3">
