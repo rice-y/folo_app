@@ -1,9 +1,43 @@
-<div class="card">
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+  <a class="navbar-brand" href="#">FOLO</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarCollapse">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <% if user_signed_in? %>
+         <li class="nav-item active">
+          <a class="nav-link" href="#"><%= current_user.member_name%>さん <span class="sr-only">(current)</span></a>
+        </li>
+
+        <li class="nav-item">
+          <%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: 'nav-link' %>
+        </li>
+      <% else %>
+        <li class="nav-item">
+          <%= link_to 'ログイン', new_user_session_path, class: 'nav-link' %>
+        </li>
+        <li class="nav-item">
+          <%= link_to 'ユーザー登録', new_user_registration_path, class: 'nav-link' %>
+        </li>
+      <% end %>
+    </ul>
+    <form class="form-inline mt-2 mt-md-0">
+      <input class="form-control mr-sm-2" type="text" placeholder="プロジェクト、タスクを検索" aria-label="Search">
+      <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
+</nav>
+
+
+<div class="card mt-5">
   <div class="card-body">
     <h2 class='card-title d-flex justify-content-between mb-4'>
       <span>プロジェクト一覧</span>
       <%= link_to '新規投稿', new_project_path, class: 'btn btn-primary' %>
-      
     </h2>
 
     <% @projects.each do |project| %>
@@ -14,11 +48,15 @@
                 <span class="badge badge-<%= project.badge_color %>">
                 <%= project.status %>
               </span>
-              <span class='text-secondary'>
+              <span class='text-secondary justify-content-between'>
                 <small>
                   進捗：<%= project.percent_complete %>%
-                  タスク完了数：(<%= project.total_complete %>/<%= project.total_tasks %> )
-                  <%# from: <%task.user.name%> %>
+                  タスク完了数：(<%= project.total_complete %>/<%= project.total_tasks %>)
+                </small>
+
+                <small>
+                   作成者: <%= project.user.member_name %>
+                   作成日：<%= project.created_at.strftime('%Y/%m/%d') %> 
                 </small>
               </span>
             </div>
