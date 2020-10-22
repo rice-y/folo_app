@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :move_to_index, except: [:index, :show]
   before_action :set_project, only: [:show, :edit, :update, :destroy]
 
   # GET /projects
@@ -64,12 +64,15 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def move_to_index
+    redirect_to action: :index unless user_signed_in?
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_project
-      @project = current_user.projects.find(params[:id])
+      @project = Project.find(params[:id])
     end
-
     # Only allow a list of trusted parameters through.
     def project_params
       params.require(:project).permit(:name, :description)
