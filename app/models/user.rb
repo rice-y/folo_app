@@ -5,4 +5,13 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :projects
+
+  with_options presence: true do
+    PASSWORD_REGEX = /\A(?=.*?[a-z])(?=.*?[\d])[a-z\d]+\z/i.freeze
+    EMAIL = /\A\S+@\S+\.\S+\z/.freeze
+    FULL_WIDTH = /\A[ぁ-んァ-ン一-龥]/.freeze
+    validates :password, format: { with: PASSWORD_REGEX, message: 'Input half_width characters' }
+    validates :email, uniqueness: true, format: { with: EMAIL }
+    validates :member_name, format: { with: FULL_WIDTH, message: 'is invalid. Input full-width characters.' }
+  end
 end

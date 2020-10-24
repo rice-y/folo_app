@@ -1,6 +1,7 @@
 class Task < ApplicationRecord
   belongs_to :project
-
+  
+  validates :name, :description, presence: true
   validates :status, inclusion: { in:['undo', 'doing', 'done'] }
 
   STATUS_OPTIONS = [
