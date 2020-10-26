@@ -14,4 +14,12 @@ class User < ApplicationRecord
     validates :email, uniqueness: true, format: { with: EMAIL }
     validates :member_name, format: { with: FULL_WIDTH, message: 'is invalid. Input full-width characters.' }
   end
+
+  def self.guest
+    find_or_create_by!(email: 'guest@example.com') do |user|
+      user.member_name = 'ゲストユーザー'
+      user.password = '123qwe'
+      
+    end
+  end
 end
