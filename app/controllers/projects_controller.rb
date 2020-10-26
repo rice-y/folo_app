@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :move_to_index, except: [:index, :show]
   before_action :set_project, only: [:show, :edit, :update, :destroy]
 
   # GET /projects
@@ -30,7 +30,7 @@ class ProjectsController < ApplicationController
 
     respond_to do |format|
       if @project.save
-        format.html { redirect_to @project, notice: 'Project was successfully created.' }
+        format.html { redirect_to @project}
         format.json { render :show, status: :created, location: @project }
       else
         format.html { render :new }
@@ -44,7 +44,7 @@ class ProjectsController < ApplicationController
   def update
     respond_to do |format|
       if @project.update(project_params)
-        format.html { redirect_to @project, notice: 'Project was successfully updated.' }
+        format.html { redirect_to @project}
         format.json { render :show, status: :ok, location: @project }
       else
         format.html { render :edit }
@@ -56,6 +56,7 @@ class ProjectsController < ApplicationController
   # DELETE /projects/1
   # DELETE /projects/1.json
   def destroy
+
     @project.destroy
     respond_to do |format|
       format.html { redirect_to projects_url, notice: 'Project was successfully destroyed.' }
@@ -63,12 +64,15 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def move_to_index
+    redirect_to action: :index unless user_signed_in?
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_project
-      @project = current_user.projects.find(params[:id])
+      @project = Project.find(params[:id])
     end
-
     # Only allow a list of trusted parameters through.
     def project_params
       params.require(:project).permit(:name, :description)

@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-  before_action :authenticate_user!
+  before_action :move_to_index, except: [:index, :show]
   before_action :set_project
   before_action :set_task, only: [:show, :edit, :update, :destroy]
 
@@ -27,7 +27,7 @@ class TasksController < ApplicationController
     @task = @project.tasks.build(task_params)
 
     if @task.save
-      redirect_to(@task.project)
+      redirect_to @project
     else
       render action: 'new'
     end
@@ -36,7 +36,7 @@ class TasksController < ApplicationController
   # PUT projects/1/tasks/1
   def update
     if @task.update_attributes(task_params)
-      redirect_to(@task.project)
+      redirect_to @project
     else
       render action: 'edit'
     end
@@ -46,13 +46,17 @@ class TasksController < ApplicationController
   def destroy
     @task.destroy
 
-    redirect_to project_tasks_url(@project)
+    redirect_to @project
+  end
+
+  def move_to_index
+    redirect_to action: :index unless user_signed_in?
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_project
-      @project = current_user.projects.find(params[:project_id])
+      @project = Project.find(params[:project_id])
     end
 
     def set_task
@@ -62,5 +66,10 @@ class TasksController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def task_params
       params.require(:task).permit(:name, :description, :status, :project_id)
+    end
+
+    # Only allow a list of trusted parameters through.
+    def project_params
+      params.require(:project).permit(:name, :description)
     end
 end
