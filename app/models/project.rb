@@ -6,7 +6,7 @@ class Project < ApplicationRecord
 
   def badge_color
     case status
-      when 'undo'
+      when 'not-started'
         'danger'
       when 'doing'
         'warning'
@@ -16,14 +16,14 @@ class Project < ApplicationRecord
   end
 
   def status
-    return 'undo' if tasks.none?
+    return 'not-started' if tasks.none?
 
     if tasks.all? { |task| task.done? }
       'done'
     elsif tasks.any? { |task| task.doing? || task.done? }
       'doing'
     else
-      'undo'
+      'not-started'
     end
   end
 

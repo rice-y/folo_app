@@ -6,8 +6,8 @@ class ProjectsController < ApplicationController
   # GET /projects.json
   def index
     if params[:search]
-      @projects = Project.where('description LIKE ?', "%#{params[:search]}%" )
-      @projects = Project.where('name LIKE ?', "%#{params[:search]}%" )
+      @projects = Project.joins(:tasks).where(['projects.description LIKE ? OR projects.name LIKE ? OR tasks.description LIKE ? OR tasks.name LIKE ?', "%#{params[:search]}%", "%#{params[:search]}%", "%#{params[:search]}%", "%#{params[:search]}%"])
+     
     else
         @projects = Project.all.order(created_at: :desc)
     end
