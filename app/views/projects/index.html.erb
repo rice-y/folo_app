@@ -32,7 +32,7 @@
 
     <%= form_with  url:'/projects', method: :get,  class: 'form-inline mt-2 mt-md-0', local: true do |f|%>
       <% f.label :search %>
-      <%= f.text_field :search, placeholder:'プロジェクトを検索', class: 'form-control mr-sm-2'  %>
+      <%= f.text_field :search, placeholder:'プロジェクト,タスクを検索', class: 'form-control mr-sm-2'  %>
       <%= f.submit 'Search', class:'btn btn-outline-warning my-2 my-sm-0' %> 
     <% end %>
 </nav>

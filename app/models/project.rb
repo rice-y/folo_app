@@ -1,6 +1,7 @@
 class Project < ApplicationRecord
   has_many :tasks, dependent: :destroy
   belongs_to :user
+  after_create :create_task
 
   validates :name, :description, presence: true
 
@@ -39,6 +40,13 @@ class Project < ApplicationRecord
   def total_tasks
     tasks.count
   end
+
+  private
+  
+    def create_task
+        Task.create(:name => "タスク名を入力", :name => "本文を入力", :status => "not-started", project_id: @project)
+    
+    end
 end
 
 
