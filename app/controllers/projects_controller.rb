@@ -22,7 +22,7 @@ class ProjectsController < ApplicationController
 
   # GET /projects/new
   def new
-    @project = ProjectTag.new
+    @project = ProjectsTag.new
   end
 
   # GET /projects/1/edit
@@ -32,10 +32,11 @@ class ProjectsController < ApplicationController
   # POST /projects
   # POST /projects.json
   def create
-    @project = ProjectTag.new(project_params)
+    @project = ProjectsTag.new(project_params)
 
-      if @project.save
-        redirect_to root_path
+      if @project.valid? 
+        @project.save
+        return redirect_to root_path
       else
         render action: 'new'
       end
@@ -75,7 +76,7 @@ class ProjectsController < ApplicationController
     end
     # Only allow a list of trusted parameters through.
     def project_params
-      params.require(:project_tag).permit(:name, :description).merge(user_id: current_user.id)
+      params.require(:projects_tag).permit(:name, :description, :title).merge(user_id: current_user.id)
     end
 
 end
