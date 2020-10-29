@@ -1,5 +1,7 @@
 class Project < ApplicationRecord
   has_many :tasks, dependent: :destroy
+  has_many :project_tag_relations
+  has_many :tags, through: :project_tag_relations
   belongs_to :user
   after_create :create_task
 
