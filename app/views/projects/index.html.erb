@@ -51,11 +51,11 @@
           <div class="card-body">
             <div class="mb-3">
                 <span class="badge badge-<%= project.badge_color %>">
-                <%= project.status %>
+                <%= project.status %>　(<%= project.percent_complete %>%)
               </span>
               <span class='text-secondary d-flex justify-content-between'>
                 <small>
-                  進捗：<%= project.percent_complete %>%
+                  
                   タスク完了数：(<%= project.total_complete %>/<%= project.total_tasks %>)
                 </small>
 
@@ -67,6 +67,7 @@
             </div>
             <h5 class='card-title text-dark'><b><%= project.name %></b></h5>
             <p class='text-secondary'><%= project.description %></p>
+            <span><%= project.tag.title%> </span>
           </div>
         </div>
       <% end %>
