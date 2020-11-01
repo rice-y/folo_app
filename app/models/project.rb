@@ -1,6 +1,6 @@
 class Project < ApplicationRecord
   has_many :tasks, dependent: :destroy
-  has_many :project_tag_relations
+  has_many :project_tag_relations, dependent: :destroy
   has_many :tags, through: :project_tag_relations
   belongs_to :user
   after_create :create_task
@@ -46,7 +46,7 @@ class Project < ApplicationRecord
   private
   
     def create_task
-        Task.create(:name => "タスク名を入力", :name => "本文を入力", :status => "not-started", project_id: @project)
+        Task.create(:name => "タスク名を入力", :description => "本文を入力", :status => "not-started", project_id: @project)
     
     end
 end

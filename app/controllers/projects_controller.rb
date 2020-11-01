@@ -27,6 +27,9 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1/edit
   def edit
+
+    @project = ProjectsTag.new(project: @project)
+    
   end
 
   # POST /projects
@@ -46,10 +49,12 @@ class ProjectsController < ApplicationController
   # PATCH/PUT /projects/1
   # PATCH/PUT /projects/1.json
   def update
-      if @project.valid?
-        @project.save(project_params)
-        @project.update(project_params)
-        returrn redirect_to @project
+
+    @project = ProjectsTag.new(project_params,project:@project)
+
+      if  @project.update
+        
+        return redirect_to project_path
       else
         render action: 'edit'
       end
@@ -80,5 +85,6 @@ class ProjectsController < ApplicationController
     def project_params
       params.require(:projects_tag).permit(:name, :description, :title).merge(user_id: current_user.id)
     end
+    
     
 end

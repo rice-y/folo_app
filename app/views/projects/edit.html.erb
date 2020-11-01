@@ -1,22 +1,11 @@
-<%= link_to 'Back', @project, class: 'btn btn-secondary mb-3' %>
+<%= link_to 'Back', url:projects_path, class: 'btn btn-secondary mb-3' %>
 <div class='card'>
   <div class="card-body">
     <h2 class = 'card-title mb-4'>
       <span>Edit Project<span>
     </h2>
 
-<%= form_with model:@project, url: projects_path, method: :update, local: true do |form| %>
-  <% if @project.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@project.errors.count, "error") %> prohibited this project from being saved:</h2>
-
-      <ul>
-        <% @project.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+<%= form_with model:@project,  url: project_path, method: :put, local: true do |form| %>
 
   <div class="form-group">
     <%= form.label :name %>
