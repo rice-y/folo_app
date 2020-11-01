@@ -46,8 +46,10 @@ class ProjectsController < ApplicationController
   # PATCH/PUT /projects/1
   # PATCH/PUT /projects/1.json
   def update
-      if @project.update(project_params)
-        redirect_to @project
+      if @project.valid?
+        @project.save(project_params)
+        @project.update(project_params)
+        returrn redirect_to @project
       else
         render action: 'edit'
       end
@@ -78,5 +80,5 @@ class ProjectsController < ApplicationController
     def project_params
       params.require(:projects_tag).permit(:name, :description, :title).merge(user_id: current_user.id)
     end
-
+    
 end
