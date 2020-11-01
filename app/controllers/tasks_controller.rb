@@ -50,7 +50,8 @@ class TasksController < ApplicationController
   end
 
   def move_to_index
-    redirect_to action: :index unless user_signed_in?
+    @project = Project.find(params[:project_id])
+    redirect_to @project unless user_signed_in?
   end
 
   private

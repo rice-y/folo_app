@@ -2,17 +2,17 @@ class Task < ApplicationRecord
   belongs_to :project
   
   validates :name, :description, presence: true
-  validates :status, inclusion: { in:['undo', 'doing', 'done'] }
+  validates :status, inclusion: { in:['not-started', 'doing', 'done'] }
 
   STATUS_OPTIONS = [
-    ['未実施(undo)', 'undo'],
+    ['未実施(not-started)', 'not-started'],
     ['作業中(doing)', 'doing'],
     ['完了(done)', 'done']
   ]
 
   def badge_color
     case status
-      when 'undo'
+      when 'not-started'
         'danger'
       when'doing'
         'warning'
@@ -29,8 +29,8 @@ class Task < ApplicationRecord
     status == 'doing'
   end
 
-  def undo?
-    status == 'undo'
+  def started?
+    status == 'not-started'
   end
 
 end

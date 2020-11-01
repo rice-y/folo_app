@@ -1,4 +1,4 @@
-<%= form_with(model: project, local: true) do |form| %>
+<%= form_with model:@project, url: projects_path, method: :post, local: true do |form| %>
   <% if project.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(project.errors.count, "error") %> prohibited this project from being saved:</h2>
@@ -21,7 +21,14 @@
     <%= form.text_area :description , class: 'form-control'%>
   </div>
 
+  <div class="form-group">
+    <%= form.label :title %>
+    <%= form.text_area :title , class: 'form-control'%>
+  </div>
+
   <div class="actions">
     <%= form.submit class: 'btn btn-primary'%>
   </div>
+
+
 <% end %>

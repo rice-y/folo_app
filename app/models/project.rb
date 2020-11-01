@@ -1,12 +1,15 @@
 class Project < ApplicationRecord
   has_many :tasks, dependent: :destroy
+  has_many :project_tag_relations, dependent: :destroy
+  has_many :tags, through: :project_tag_relations
   belongs_to :user
+  after_create :create_task
 
   validates :name, :description, presence: true
 
   def badge_color
     case status
-      when 'undo'
+      when 'not-started'
         'danger'
       when 'doing'
         'warning'
@@ -16,14 +19,14 @@ class Project < ApplicationRecord
   end
 
   def status
-    return 'undo' if tasks.none?
+    return 'not-started' if tasks.none?
 
     if tasks.all? { |task| task.done? }
       'done'
     elsif tasks.any? { |task| task.doing? || task.done? }
       'doing'
     else
-      'undo'
+      'not-started'
     end
   end
 
@@ -39,6 +42,13 @@ class Project < ApplicationRecord
   def total_tasks
     tasks.count
   end
+
+  private
+  
+    def create_task
+        Task.create(:name => "タスク名を入力", :description => "本文を入力", :status => "not-started", project_id: @project)
+    
+    end
 end
 
 

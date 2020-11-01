@@ -5,7 +5,13 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.json
   def index
-    @projects = Project.all
+    if params[:search]
+      @projects = Project.joins(:tasks).where(['projects.description LIKE ? OR projects.name LIKE ? OR tasks.description LIKE ? OR tasks.name LIKE ?', "%#{params[:search]}%", "%#{params[:search]}%", "%#{params[:search]}%", "%#{params[:search]}%"])
+     
+    else
+        @projects = Project.all.order(created_at: :desc)
+    end
+  
   end
 
   # GET /projects/1
@@ -16,41 +22,42 @@ class ProjectsController < ApplicationController
 
   # GET /projects/new
   def new
-    @project = current_user.projects.build
+    @project = ProjectsTag.new
   end
 
   # GET /projects/1/edit
   def edit
+
+    @project = ProjectsTag.new(project: @project)
+    
   end
 
   # POST /projects
   # POST /projects.json
   def create
-    @project = current_user.projects.build(project_params)
+    @project = ProjectsTag.new(project_params)
 
-    respond_to do |format|
-      if @project.save
-        format.html { redirect_to @project}
-        format.json { render :show, status: :created, location: @project }
+      if @project.valid? 
+        @project.save
+        return redirect_to root_path
       else
-        format.html { render :new }
-        format.json { render json: @project.errors, status: :unprocessable_entity }
+        render action: 'new'
       end
-    end
+    
   end
 
   # PATCH/PUT /projects/1
   # PATCH/PUT /projects/1.json
   def update
-    respond_to do |format|
-      if @project.update(project_params)
-        format.html { redirect_to @project}
-        format.json { render :show, status: :ok, location: @project }
+
+    @project = ProjectsTag.new(project_params,project:@project)
+
+      if  @project.update
+        
+        return redirect_to project_path
       else
-        format.html { render :edit }
-        format.json { render json: @project.errors, status: :unprocessable_entity }
+        render action: 'edit'
       end
-    end
   end
 
   # DELETE /projects/1
@@ -67,6 +74,7 @@ class ProjectsController < ApplicationController
   def move_to_index
     redirect_to action: :index unless user_signed_in?
   end
+  
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -75,6 +83,8 @@ class ProjectsController < ApplicationController
     end
     # Only allow a list of trusted parameters through.
     def project_params
-      params.require(:project).permit(:name, :description)
+      params.require(:projects_tag).permit(:name, :description, :title).merge(user_id: current_user.id)
     end
+    
+    
 end
