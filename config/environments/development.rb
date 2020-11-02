@@ -62,4 +62,5 @@ Rails.application.configure do
 
   config.reload_classes_only_on_change = false
   config.webpacker.check_yarn_integrity = true
+  config.hosts << "folo-app.herokuapp.com"
 end
