@@ -9,6 +9,10 @@ Rails.application.routes.draw do
   resources :projects do
     resources :tasks
   end
+
+  resources :tags do
+    get 'projecs', to: 'projects#search'
+  end
   
   
 end

@@ -85,6 +85,12 @@ class ProjectsController < ApplicationController
     def project_params
       params.require(:projects_tag).permit(:name, :description, :title).merge(user_id: current_user.id)
     end
+
+    def search
+      @tag_list = Tag.all  #こっちの投稿一覧表示ページでも全てのタグを表示するために、タグを全取得
+      @tag = Tag.find(params[:tag_id])  #クリックしたタグを取得
+      @posts = @tag.projects.all           #クリックしたタグに紐付けられた投稿を全て表示
+  end
     
     
 end

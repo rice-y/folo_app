@@ -67,8 +67,9 @@
             </div>
             <h5 class='card-title text-dark'><b><%= project.name %></b></h5>
             <p class='text-secondary'><%= project.description %></p>
-            <span><%project.tags.each do |tag| %>
-              ＃<%=tag.title%>
+            <span class= 'text-decoration-none'>
+            <%project.tags.each do |tag| %>
+              タグ：#<%=tag.title%>
             <%end%></span>
           </div>
         </div>
